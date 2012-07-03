@@ -24,6 +24,7 @@ GEM
     do_sqlite3 (0.10.8)
       data_objects (= 0.10.8)
     minitest (3.2.0)
+    rake (0.9.2.2)
 
 PLATFORMS
   ruby
@@ -34,3 +35,4 @@ DEPENDENCIES
   dm-timestamps (= 1.2.0)
   ixtlan-optimistic!
   minitest (= 3.2.0)
+  rake (= 0.9.2.2)
