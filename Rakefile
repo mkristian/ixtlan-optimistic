@@ -1,3 +1,4 @@
+# -*- mode: ruby -*-
 task :default => [ :spec ]
 
 task :spec do
@@ -9,3 +10,4 @@ task :spec do
 
   Dir['spec/*_spec.rb'].each { |f| require File.basename(f.sub(/.rb$/, '')) }
 end
+# vim: syntax=Ruby
