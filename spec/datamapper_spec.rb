@@ -23,16 +23,36 @@ describe Ixtlan::Optimistic::DataMapper do
 
   subject { A.create :name => 'huffalump' }
 
-  it 'should load' do
-    A.optimistic_get!(subject.updated_at.to_s, subject.id).must_equal subject
+  describe "#optimistic_get" do
+
+    it 'should load' do
+      A.optimistic_get(subject.updated_at.to_s, subject.id).must_equal subject
+    end
+
+    it 'should fail with stale exception' do
+      lambda { A.optimistic_get((subject.updated_at - 1000).to_s, subject.id) }.must_raise Ixtlan::Optimistic::ObjectStaleException
+    end
+
+    it 'should fail with nil' do
+      A.optimistic_get(subject.updated_at.to_s, subject.id + 987).must_be_nil
+    end
+
   end
 
-  it 'should fail with nil' do
-    A.optimistic_get((subject.updated_at - 1000).to_s, subject.id).must_be_nil
-  end
+  describe "#optimistic_get!" do
 
-  it 'should fail with exception' do
-    lambda { A.optimistic_get!((subject.updated_at - 1000).to_s, subject.id) }.must_raise Ixtlan::Optimistic::ObjectStaleException
+    it 'should load' do
+      A.optimistic_get!(subject.updated_at.to_s, subject.id).must_equal subject
+    end
+    
+    it 'should fail with not-found exception' do
+      lambda { A.optimistic_get!(subject.updated_at.to_s, subject.id + 987) }.must_raise DataMapper::ObjectNotFoundError
+    end
+    
+    it 'should fail with stale exception' do
+      lambda { A.optimistic_get!((subject.updated_at - 1000).to_s, subject.id) }.must_raise Ixtlan::Optimistic::ObjectStaleException
+    end
+
   end
 
 end
