@@ -1,7 +1,7 @@
 # Ixtlan Optimistic #
 
 * [![Build Status](https://secure.travis-ci.org/mkristian/ixtlan-optimistic.png)](http://travis-ci.org/mkristian/ixtlan-optimistic)
-* [![Dependency Status](https://gemnasium.com/mkristian/ixtlan-optimistic.png)](https://gemnasium.com/mkristian/ixtlan-remote)
+* [![Dependency Status](https://gemnasium.com/mkristian/ixtlan-optimistic.png)](https://gemnasium.com/mkristian/ixtlan-optimistic)
 * [![Code Climate](https://codeclimate.com/badge.png)](https://codeclimate.com/github/mkristian/ixtlan-optimistic)
 
 
