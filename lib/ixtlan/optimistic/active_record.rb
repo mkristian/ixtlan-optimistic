@@ -19,30 +19,21 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 require 'ixtlan/optimistic/object_stale_exception'
+require 'ixtlan/optimistic/stale_check'
 module Ixtlan
   module Optimistic
     module ActiveRecord
 
       def self.included(base)
+        base.extend StaleCheck
         base.class_eval do
-
           def self.optimistic_find(updated_at, *args)
-            if updated_at  
-              dummy = self.new
-              dummy.updated_at = updated_at
-              updated_at_date = dummy.updated_at
-              # try different ways to use the date
-              # TODO maybe there is a nicer way ??
-              # TODO make it work with different PKs
-              result = first(:conditions => ["id = ? and updated_at <= ? and updated_at >= ?", args[0], updated_at_date + 0.0005, updated_at_date - 0.0005])
-p result
-              raise ObjectStaleException.new "#{self} with ID=#{args[0]} is stale" unless result
-              result
-            else
-              raise ObjectStaleException.new "no 'updated_at' given. could not dind #{self} with ID=#{args[0]}."
+            __check( updated_at )
+            result = find( *args )
+            if result
+              __check_stale( updated_at, result )
             end
           end
-
         end
       end
     end

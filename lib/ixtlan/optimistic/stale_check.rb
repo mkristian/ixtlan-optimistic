@@ -19,29 +19,25 @@
 # CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #
 require 'ixtlan/optimistic/object_stale_exception'
-require 'ixtlan/optimistic/stale_check'
 module Ixtlan
   module Optimistic
-    module DataMapper
+    module StaleCheck
 
-      def self.included(base)
-        base.extend StaleCheck
-        base.class_eval do
-
-          def self.optimistic_get(updated_at, *args) 
-            __check( updated_at )
-            result = get( *args )
-            if result
-              __check_stale( updated_at, result )
-            end
-          end
- 
-          def self.optimistic_get!(updated_at, *args)
-            __check( updated_at )
-            result = get!( *args )
-            __check_stale( updated_at, result )
-          end
+      def __check( updated_at )
+        unless updated_at
+          raise ObjectStaleException.new "no 'updated_at' given. could not find #{signature(*args)}."
         end
+      end
+      
+      def __check_stale( updated_at, result )
+        if updated_at.is_a?( String )
+          updated_at = DateTime.parse( updated_at.sub(/[.][0-9]+/, '') )
+        end
+        if updated_at != result.updated_at && updated_at.strftime("%Y:%m:%d %H:%M:%S") != result.updated_at.strftime("%Y:%m:%d %H:%M:%S")
+          
+          raise ObjectStaleException.new "#{self.class} with key #{result.key} is stale for updated at #{updated_at}."
+        end
+        result
       end
     end
   end
