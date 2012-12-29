@@ -33,9 +33,10 @@ module Ixtlan
         if updated_at.is_a?( String )
           updated_at = DateTime.parse( updated_at.sub(/[.][0-9]+/, '') )
         end
-        if updated_at != result.updated_at && updated_at.strftime("%Y:%m:%d %H:%M:%S") != result.updated_at.strftime("%Y:%m:%d %H:%M:%S")
+        updated_at = updated_at.new_offset(0)
+        if updated_at != result.updated_at && updated_at.strftime("%Y:%m:%d %H:%M:%S") != result.updated_at.new_offset(0).strftime("%Y:%m:%d %H:%M:%S")
           
-          raise ObjectStaleException.new "#{self.class} with key #{result.key} is stale for updated at #{updated_at}."
+          raise ObjectStaleException.new "#{result.inspect} is stale for updated at #{updated_at}."
         end
         result
       end
