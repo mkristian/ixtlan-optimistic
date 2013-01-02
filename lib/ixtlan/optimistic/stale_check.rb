@@ -30,11 +30,14 @@ module Ixtlan
       end
       
       def __check_stale( updated_at, result )
-        if updated_at.is_a?( String )
+        if updated_at.is_a? String
           updated_at = DateTime.parse( updated_at.sub(/[.][0-9]+/, '') )
         end
+        if defined?( ActiveSupport ) && updated_at.is_a?( ActiveSupport::TimeWithZone )
+          updated_at = updated_at.to_datetime
+        end
         updated_at = updated_at.new_offset(0)
-        if updated_at != result.updated_at && updated_at.strftime("%Y:%m:%d %H:%M:%S") != result.updated_at.new_offset(0).strftime("%Y:%m:%d %H:%M:%S")
+        if updated_at != result.updated_at && updated_at.strftime("%Y:%m:%d %H:%M:%S") != result.updated_at.strftime("%Y:%m:%d %H:%M:%S")
           
           raise ObjectStaleException.new "#{result.inspect} is stale for updated at #{updated_at}."
         end
