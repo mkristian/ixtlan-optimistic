@@ -1,7 +1,7 @@
 # -*- mode: ruby -*-
 Gem::Specification.new do |s|
   s.name = 'ixtlan-optimistic'
-  s.version = '0.2.3'
+  s.version = '0.2.4'
 
   s.summary = 'optimistic find/get on model via updated_at timestamp for datamapper and activerecord'
   s.description = s.summary
