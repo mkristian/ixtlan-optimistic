@@ -18,12 +18,11 @@ Gem::Specification.new do |s|
   s.files += Dir['lib/**/*']
   s.files += Dir['spec/**/*']
   s.test_files += Dir['spec/**/*_spec.rb']
-  s.add_development_dependency 'minitest', '~>4.3.0'
+  s.add_development_dependency 'minitest', '~>5.0'
   s.add_development_dependency 'dm-timestamps', '1.2.0'
   s.add_development_dependency 'dm-migrations', '1.2.0'
   s.add_development_dependency 'dm-sqlite-adapter', '1.2.0'
   s.add_development_dependency 'rake', '~>10.0.2'
-  s.add_development_dependency 'copyright-header', '1.0.8'
 end
 
 # vim: syntax=Ruby

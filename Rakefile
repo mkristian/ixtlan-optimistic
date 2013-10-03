@@ -1,14 +1,18 @@
 # -*- mode: ruby -*-
+
 task :default => [ :spec ]
 
 task :spec do
   require 'rubygems'
-  require 'bundler/setup'
+  begin
+    require 'minitest'
+  rescue LoadError
+  end
   require 'minitest/autorun'
 
   $LOAD_PATH << "spec"
 
-  Dir['spec/*_spec.rb'].each { |f| require File.basename(f.sub(/.rb$/, '')) }
+  Dir['spec/*_spec.rb'].each { |f| require File.expand_path(f).sub(/.rb$/, '') }
 end
 
 task :headers do
