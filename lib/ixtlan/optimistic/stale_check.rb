@@ -39,7 +39,7 @@ module Ixtlan
         updated_at = updated_at.new_offset(0)
         if updated_at != result.updated_at && updated_at.strftime("%Y:%m:%d %H:%M:%S") != result.updated_at.strftime("%Y:%m:%d %H:%M:%S")
           
-          raise ObjectStaleException.new "#{result.inspect} is newer than the given updated at #{updated_at}."
+          raise ObjectStaleException.new "#{result.model} with key [#{result.id}] was updated at #{result.updated_at} is newer than the given one which was updated at #{updated_at}."
         end
         result
       end
